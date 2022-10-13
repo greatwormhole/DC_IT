@@ -2,12 +2,6 @@ s = input().split(sep=", ")
 d = {}
 for word in s:
     d[word] = d.get(word, 0) + 1
-sorted_keys = sorted(d, key=d.get, reverse=True)
-sorted_dict = {}
-for i in sorted_keys:
-    sorted_dict[i] = d[i]
-i = 0
-temp = list(sorted_dict.keys())
-while i < 3 and i < len(temp):
-    print(f'{temp[i]}: {sorted_dict.get(temp[i])}')
-    i += 1
+sorted_pairs = sorted(((key, value) for key, value in d.items()), key=lambda x: x[-1], reverse=True)
+for pair in sorted_pairs[:3]:
+    print(*pair, sep=": ")
