@@ -3,7 +3,10 @@ def get_balance(name, transactions):
 
 
 def count_debts(names, amount, transactions):
-    return [{i: max(amount - get_balance(i, transactions), 0)} for i in names]
+    dict = {}
+    for i in names:
+        dict.update({i: max(amount - get_balance(i, transactions), 0)})
+    return dict
 
 
 if __name__ == "__main__":
