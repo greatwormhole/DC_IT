@@ -3,7 +3,7 @@ import datetime
 def gift_count(budget, month, birthdays):
     res = sorted([f"{i} ({j.strftime('%d.%m.%Y')})"
                 for i, j in filter(lambda x: x[-1].month == month, birthdays.items())],
-                key=lambda x: x[-1])
+                key=lambda x: x[-11:-9])
     if len(res) != 0:
         print(f"Именинники в месяце {month}: {', '.join(res)}"
               f". При бюджете {budget} они получат по {budget // len(res)} рублей.")
