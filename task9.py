@@ -8,7 +8,7 @@ def gift_count(budget, month, birthdays):
         print(f"Именинники в месяце {month}: {', '.join(res)}"
               f". При бюджете {budget} они получат по {budget // len(res)} рублей.")
     else:
-        print("В этом месяце нет именниннков.")
+        print("В этом месяце нет имениннbков.")
 
 if __name__ == "__main__":
     birthdays = {"Иванов Иван Иванович": datetime.date(1989, 5, 1), "Петров Петр Петрович": datetime.date(1998, 5, 6)}

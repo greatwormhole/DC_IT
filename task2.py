@@ -1,7 +1,2 @@
-s = input()
-res = 0
-while s:
-    if int(s) % 2 == 0:
-        res += int(s)
-    s = input()
-print(res)
+from sys import stdin
+print(sum([int(i) for i in filter(lambda x: x != '', map(str.strip, stdin)) if int(i) % 2 == 0]))
