@@ -2,8 +2,8 @@ import re as r
 
 
 def check_string(string):
-    pattern = r.compile(r"(\+{0,1}[78]{0,1}[- ]{0,1}[\( ]{0,1}\d{3}[\) ]{0,1}[- ]{0,1}\d{3}-*\d{2}-*\d{2})"
-                        r"|((\w\.{0,1})+@(\w\.{0,1}))")
+    pattern = r.compile(r"((\+(?=7))?[78]?[- ]?[\( ]?\d{3}[\) ]?[- ]?\d{3}-?\d{2}-?\d{2})|"
+                        r"(\w+(\.\w{2,})*@\w+(\.\w{2,})+)", flags=r.ASCII)
     return bool(pattern.fullmatch(string))
 
 
