@@ -1,13 +1,7 @@
-import re as r
+from util import *
 
 
-def check_string(string):
-    pattern = r.compile(r"((\+(?=7))?[78]?[- ]?[\( ]?\d{3}[\) ]?[- ]?\d{3}-?\d{2}-?\d{2})|"
-                        r"(\w+(\.\w{2,})*@\w+(\.\w{2,})+)", flags=r.ASCII)
-    return bool(pattern.fullmatch(string))
-
-
-if __name__ == "__main__":
+def task13() -> None:
     li_tel = ["+79160000000", 
           "9160000000",
           "8(916)000-00-00",
@@ -34,3 +28,16 @@ if __name__ == "__main__":
                      "abc@abc@abc"]
     for i in li_tel + li_mail_true + li_mail_false:
         print(f"{i}:\t{check_string(i)}")
+
+def task14() -> None:
+    print(get_popular_name_from_file("EXAMPLE_TEXT_TASK14.txt"))
+
+def task15() -> None:
+    data = '[{"name": "Петр","surname": "Петров","patronymic": "Васильевич","age": 23,"occupation": "ойтишнек"},{"name": "Василий","surname": "Васильев","patronymic": "Петрович","age": 24,"occupation": "дворник"}]'
+    print(mean_age(data))
+
+def main():
+    task15()
+
+if __name__ == "__main__":
+    main()
