@@ -1,2 +1,1 @@
-One another file.A lot of lines.
-LOL
+This is brand new file.New line of brand new file.
