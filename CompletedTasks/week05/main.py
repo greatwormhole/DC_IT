@@ -21,7 +21,23 @@ def task16()-> None:
 
 def task17() -> None:
     Q = DollarWallet("Q", 10)
-    print(Q + 10)
+    print("1:", Q.to_base())
+    print("2:", Q + 10)
+    print("3:", Q - 10)
+    print("4:", Q * 10)
+    print("5:", 10 - Q)
+    print("6:", 10 * Q)
+    print("7:", 10 + Q)
+    Q += 10
+    print("8:", Q)
+    Q -= 10
+    print("9:", Q)
+    Q *= 10
+    print("10:", Q)
+    Q /= 10
+    print("11:", Q)
+    Q.spend_all()
+    print("12:", Q)
 
 def main():
     task17()

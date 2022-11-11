@@ -5,46 +5,73 @@ class BaseWallet:
         self.name = name
         self.amount = amount
 
+    def _copy(self):
+        return BaseWallet(self.name, self.amount)
+
     def __add__(self, other):
+        tmp = self._copy()
         if issubclass(type(other), BaseWallet) == True:
-            n_amount = self.amount + other.amount * other.exchange_rate
+            tmp.amount += other.amount * other.exchange_rate
         else:
-            n_amount = self.amount + float(other)
-        pass
+            tmp.amount += float(other)
+        return tmp
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __iadd__(self, other):
-        self = self.__add__(other)
+        if issubclass(type(other), BaseWallet) == True:
+            self.amount += other.amount * other.exchange_rate
+        else:
+            self.amount += float(other)
+        return self
         
     def __sub__(self, other):
+        tmp = self._copy()
         if issubclass(type(other), BaseWallet) == True:
-            n_amount = self.amount - other.amount * other.exchange_rate
+            tmp.amount -= other.amount * other.exchange_rate
         else:
-            n_amount = self.amount - float(other)
-        return BaseWallet(self.name, n_amount)
+            tmp.amount -= float(other)
+        return tmp
 
     def __rsub__(self, other):
-        return BaseWallet(self.name, other - self.amount)
+        tmp = self._copy()
+        tmp.amount = other - self.amount
+        return tmp
 
     def __isub__(self, other):
-        self = self.__sub__(other)
+        if issubclass(type(other), BaseWallet) == True:
+            self.amount -= other.amount * other.exchange_rate
+        else:
+            self.amount -= float(other)
+        return self
 
     def __mul__(self, other):
-        return BaseWallet(self.name, self.amount * other)
+        tmp = self._copy()
+        if issubclass(type(other), BaseWallet) == True:
+            tmp.amount *= other.amount * other.exchange_rate
+        else:
+            tmp.amount *= float(other)
+        return tmp
 
     def __imul__(self, other):
-        self = self.__mul__(other)
+        if issubclass(type(other), BaseWallet) == True:
+            self.amount *= other.amount * other.exchange_rate
+        else:
+            self.amount *= float(other)
+        return self
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __div__(self, other):
-        return BaseWallet(self.name, self.amount / other)
+    def __truediv__(self, other):
+        tmp = self._copy()
+        tmp.amount /= other
+        return tmp
 
-    def __idiv__(self, other):
-        self = self.__div__(other)
+    def __itruediv__(self, other):
+        self.amount /= other
+        return self
 
     def __eq__(self, other):
         return bool(type(self) == type(other) and self.amount == other.amount)
@@ -62,8 +89,6 @@ class BaseWallet:
     def to_base(self):
         return self.exchange_rate * self.amount
 
-
-
 class RubbleWallet(BaseWallet):
     exchange_rate = 1
 
@@ -78,18 +103,20 @@ class DollarWallet(BaseWallet):
     def __init__(self, name: str = "DollarWallet", amount: int = 0):
         super(DollarWallet, self).__init__(name, amount)
 
+    def _copy(self):
+        return DollarWallet(self.name, self.amount)
+
     def __str__(self):
         return f"Dollar Wallet {self.name} {self.amount}"
-
-    def __add__(self, other):
-        super().__add__(other)
-        return DollarWallet(self.name, n_amount)
 
 class EuroWallet(BaseWallet):
     exchange_rate = 70
 
     def __init__(self, name: str = "EuroWallet", amount: int = 0):
         super(EuroWallet, self).__init__(name, amount)
+
+    def _copy(self):
+        return EuroWallet(self.name, self.amount)
 
     def __str__(self):
         return f"Euro Wallet {self.name} {self.amount}"
