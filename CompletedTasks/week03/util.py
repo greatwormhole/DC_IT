@@ -14,7 +14,7 @@ def lists_sum(*args: list, unique: bool = False) -> (int | float):
     else:
         return sum({i for j in args for i in j})
 
-def get_balance(name: str, transactions: list):
+def get_balance(name: str, transactions: list) -> (int | float):
     return sum([i.get("amount") for i in transactions if i.get("name") == name])
 
 

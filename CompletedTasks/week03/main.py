@@ -17,7 +17,7 @@ def task12() -> None:
     print(count_debts(["Василий", "Петя", "Вова"], 150, transactions))
 
 def main():
-    pass
+    task12()
 
 if __name__ == "__main__":
     main()
