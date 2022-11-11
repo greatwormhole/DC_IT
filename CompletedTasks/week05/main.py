@@ -1,7 +1,8 @@
-from util import *
+from Calculator import *
+from Wallet import *
 
 
-def main():
+def task16()-> None:
     c = Calculator()
     print(c.sum(2, 7))
     print(c.sub(2, 7))
@@ -17,6 +18,13 @@ def main():
     print(c.last)
     print(t.last)
     print(t.history(1))
+
+def task17() -> None:
+    Q = DollarWallet("Q", 10)
+    print(Q + 10)
+
+def main():
+    task17()
 
 
 if __name__ == "__main__":
