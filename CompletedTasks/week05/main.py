@@ -21,6 +21,12 @@ def task16()-> None:
 
 def task17() -> None:
     Q = DollarWallet("Q", 10)
+    E = EuroWallet("E", 10)
+    R = RubbleWallet("R", 10)
+    print(Q + E)
+    print(E + Q)
+    print(R + Q)
+    print(Q + R)
     print("1:", Q.to_base())
     print("2:", Q + 10)
     print("3:", Q - 10)
