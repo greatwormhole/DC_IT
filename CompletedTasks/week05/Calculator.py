@@ -6,30 +6,21 @@ class Calculator:
 
     def sum(self, a, b):
         res = a + b
-        if type(res) == float:
-            st = f"sum({a}, {b}) == {res:.1f}"
-        else:
-            st = f"sum({a}, {b}) == {res}"
+        st = f"sum({a}, {b}) == {round(res, 1)}"
         self._hist.append(st)
         self._write_last(st)
         return res
 
     def sub(self, a, b):
         res = a - b
-        if type(res) == float:
-            st = f"sub({a}, {b}) == {res:.1f}"
-        else:
-            st = f"sub({a}, {b}) == {res}"
+        st = f"sub({a}, {b}) == {round(res, 1)}"
         self._hist.append(st)
         self._write_last(st)
         return res
 
     def mul(self, a, b):
         res = a * b
-        if type(res) == float:
-            st = f"mul({a}, {b}) == {res:.1f}"
-        else:
-            st = f"mul({a}, {b}) == {res}"
+        st = f"mul({a}, {b}) == {round(res, 1)}"
         self._hist.append(st)
         self._write_last(st)
         return res
@@ -37,22 +28,12 @@ class Calculator:
     def div(self, a, b, mode: bool = False):
         if mode == False:
             res = a / b
-            if type(res) == float:
-                st = f"div({a}, {b}) == {res:.1f}"
-            else:
-                st = f"div({a}, {b}) == {res}"
-            self._hist.append(st)
-            self._write_last(st)
-            return res
         else:
             res = a % b
-            if type(res) == float:
-                st = f"div({a}, {b}) == {res:.1f}"
-            else:
-                st = f"div({a}, {b}) == {res}"
-            self._hist.append(st)
-            self._write_last(st)
-            return res
+        st = f"div({a}, {b}) == {round(res, 1)}"
+        self._hist.append(st)
+        self._write_last(st)
+        return res
 
     def history(self, n: int):
         try:
