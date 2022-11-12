@@ -11,7 +11,7 @@ class BaseWallet:
     def __add__(self, other):
         tmp = self._copy()
         if issubclass(type(other), BaseWallet) == True:
-            tmp.amount += other.amount * other.exchange_rate
+            tmp.amount += other.amount * other.exchange_rate / tmp.exchange_rate
         else:
             tmp.amount += float(other)
         return tmp
@@ -21,7 +21,7 @@ class BaseWallet:
 
     def __iadd__(self, other):
         if issubclass(type(other), BaseWallet) == True:
-            self.amount += other.amount * other.exchange_rate
+            self.amount += other.amount * other.exchange_rate / self.exchange_rate
         else:
             self.amount += float(other)
         return self
@@ -29,7 +29,7 @@ class BaseWallet:
     def __sub__(self, other):
         tmp = self._copy()
         if issubclass(type(other), BaseWallet) == True:
-            tmp.amount -= other.amount * other.exchange_rate
+            tmp.amount -= other.amount * other.exchange_rate / tmp.exchange_rate
         else:
             tmp.amount -= float(other)
         return tmp
@@ -41,24 +41,18 @@ class BaseWallet:
 
     def __isub__(self, other):
         if issubclass(type(other), BaseWallet) == True:
-            self.amount -= other.amount * other.exchange_rate
+            self.amount -= other.amount * other.exchange_rate / self.exchange_rate
         else:
             self.amount -= float(other)
         return self
 
     def __mul__(self, other):
         tmp = self._copy()
-        if issubclass(type(other), BaseWallet) == True:
-            tmp.amount *= other.amount * other.exchange_rate
-        else:
-            tmp.amount *= float(other)
+        tmp.amount *= float(other)
         return tmp
 
     def __imul__(self, other):
-        if issubclass(type(other), BaseWallet) == True:
-            self.amount *= other.amount * other.exchange_rate
-        else:
-            self.amount *= float(other)
+        self.amount *= float(other)
         return self
 
     def __rmul__(self, other):
@@ -95,11 +89,15 @@ class RubbleWallet(BaseWallet):
     def __init__(self, name: str = "RubbleWallet", amount: int = 0):
         super(RubbleWallet, self).__init__(name, amount)
 
+    def _copy(self):
+        return RubbleWallet(self.name, self.amount)
+
     def __str__(self):
         return f"Rubble Wallet {self.name} {self.amount}"
 
 class DollarWallet(BaseWallet):
     exchange_rate = 60
+    
     def __init__(self, name: str = "DollarWallet", amount: int = 0):
         super(DollarWallet, self).__init__(name, amount)
 
