@@ -19,7 +19,4 @@ def get_balance(name: str, transactions: list) -> (int | float):
 
 
 def count_debts(names: list, amount: (int | float), transactions: list) -> dict:
-    dict = {}
-    for i in names:
-        dict.update({i: max(amount - get_balance(i, transactions), 0)})
-    return dict
+    return {i: max(amount - get_balance(i, transactions), 0) for i in names}
