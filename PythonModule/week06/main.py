@@ -15,16 +15,28 @@ def task18() -> None:
     field['1', 'A'] = 10
     field['1A'] = 11
     field['A1'] = 12
+    field.a10 = 33
+    field.A10 = 34
 
     print(field['1A'])
     print(field['A1'])
     print(field['A', 1])
     print(field[1, 'A'])
-    print(field.keys())
+    print("field.dict:", field.dict)
+    print("field.__dict__:", field.__dict__)
 
     print((1, 'a') in field)
     print("A1" in field)
     print(('D', '4') in field)
+
+    for i in field:
+        print("loop:", i)
+
+    print(field.a10)
+    print(field.A10)
+    del field.a10
+    print(field.A10)
+    del field.aa
 
 def task19() -> None:
     pass
