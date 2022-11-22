@@ -1,4 +1,5 @@
-from Field import *
+from Field_inheritance import *
+#from Field_clean_implementation import *
 from Booking import *
 
 def task18() -> None:
@@ -17,12 +18,14 @@ def task18() -> None:
     field['A1'] = 12
     field.a10 = 33
     field.A10 = 34
+    field.b123 = 111
+    field.qw2 = 0
 
     print(field['1A'])
     print(field['A1'])
     print(field['A', 1])
     print(field[1, 'A'])
-    print("field.dict:", field.dict)
+    print("field.keys():", field.keys())
     print("field.__dict__:", field.__dict__)
 
     print((1, 'a') in field)
@@ -35,11 +38,16 @@ def task18() -> None:
     print(field.a10)
     print(field.A10)
     del field.a10
-    print(field.A10)
-    del field.aa
+    del field.b123
+    print(field["a10"])
+    print(field.A324)
+    print(field.qw2)
 
 def task19() -> None:
-    pass
+    d = {}
+    #d.a1 = 10
+    #print(d.a1)
+    #print(d.__dict__)
 
 def task20() -> None:
     pass

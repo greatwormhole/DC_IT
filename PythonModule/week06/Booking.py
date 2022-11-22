@@ -6,7 +6,7 @@ class Booking:
     
     def __init__(self, __name: str, __start: datetime.datetime, __end: datetime.datetime) -> None:
         if __start > __end:
-            raise ValueError
+            raise ValueError("Дата начала позже даты окончания")
         self.room_name = __name
         self.start = __start
         self.end = __end
@@ -37,20 +37,18 @@ def create_booking(room_name, start, end) -> str:
     try:
         bkg = Booking(room_name, start, end)
         res["booking"] = {"room_name": bkg.room_name,
-                            "start_date": bkg.start_date,
-                            "start_time": bkg.start_time,
-                            "end_date": bkg.end_date,
-                            "end_time": bkg.end_time,
-                            "duration": bkg.duration}
+                          "start_date": bkg.start_date,
+                          "start_time": bkg.start_time,
+                          "end_date": bkg.end_date,
+                          "end_time": bkg.end_time,
+                          "duration": bkg.duration}
         if register_booking(bkg) == True:
             res["created"] = True
             res["msg"] = "Бронирование создано"
         else:
             res["created"] = False
             res["msg"] = "Комната занята"
-    except ValueError:
-        return None
-    except KeyError:
+    except (KeyError, ValueError):
         res["created"] = False
         res["msg"] = "Комната не найдена"
     finally:
