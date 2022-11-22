@@ -5,7 +5,7 @@ class Field(dict):
     def __contains__(self, __other: object) -> bool:
         try:
             __proper_key = self._key_normalize(__other)
-        except (ValueError, TypeError):
+        except ValueError:
             return super().__contains__(__other)
         else:
             return super().__contains__(__proper_key)
@@ -13,8 +13,8 @@ class Field(dict):
     def __setattr__(self, __name: str, __value) -> None:
         try:
             __proper_key = self._key_normalize(__name)
-        except (ValueError, TypeError):
-            super().__setattr__(__name, __value)
+        except ValueError:
+            return super().__setattr__(__name, __value)
         else:
             super().__setitem__(__proper_key, __value)
             return super().__setattr__(__proper_key, __value)
@@ -22,7 +22,7 @@ class Field(dict):
     def __getattribute__(self, __name):
         try:
             __proper_key = Field._key_normalize(__name)
-        except (ValueError, TypeError):
+        except ValueError:
             return super().__getattribute__(__name)
         else:
             return super().__getitem__(__proper_key)
@@ -30,8 +30,8 @@ class Field(dict):
     def __delattr__(self, __name) -> None:
         try:
             __proper_key = self._key_normalize(__name)
-        except (ValueError, TypeError):
-            super().__delattr__(__name)
+        except ValueError:
+            return super().__delattr__(__name)
         else:
             super().__delitem__(__proper_key)
             return super().__delattr__(__proper_key)

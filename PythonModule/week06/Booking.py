@@ -33,7 +33,7 @@ class Booking:
 
 def create_booking(room_name, start, end) -> str:
     print("Начинаем создание бронирования")
-    res = {}
+    res: dict = {}
     try:
         bkg = Booking(room_name, start, end)
         res["booking"] = {"room_name": bkg.room_name,

@@ -44,9 +44,7 @@ class Calculator:
     @classmethod
     def _write_last(cls, str: str) -> str:
         cls.last = str
-        return cls.last
 
     @classmethod
     def clear(cls) -> None:
         cls.last = None
-        return cls.last

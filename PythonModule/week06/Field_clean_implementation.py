@@ -1,72 +1,64 @@
-import re
+from re import fullmatch
 
 class Field:
-    _str_pattern = re.compile(r"(^\d+\w)|(^\w\d+)", flags=re.ASCII)
 
     def __init__(self):
         self.dict = {}
 
     def __contains__(self, __other: object) -> bool:
-        return self._key_check(__other) in self.dict
+        try:
+            __proper_key = self._key_normalize(__other)
+        except ValueError:
+            return __other in self.__dict__
+        else:
+            return __proper_key in self.dict
 
     def __setattr__(self, __name: str, __value) -> None:
-        self.__dict__[__name.lower()] = __value
         try:
-            self.dict[self._key_check(__name)] = __value
-        except (ValueError, TypeError):
-            pass
+            __proper_key = self._key_normalize(__name)
+        except ValueError:
+            return super().__setattr__(__name, __value)
+        else:
+            self.dict[__proper_key] = __value
+            return super().__setattr__(__proper_key, __value)
 
     def __getattribute__(self, __name):
         try:
-            return super().__getattribute__(__name.lower())
-        except AttributeError:
-            return None
+            __proper_key = Field._key_normalize(__name)
+        except ValueError:
+            return super().__getattribute__(__name)
+        else:
+            self.dict.get(__proper_key, None)
 
     def __delattr__(self, __name) -> None:
         try:
-            del self.__dict__[__name.lower()]
-            del self.dict[__name.lower()]
-        except KeyError:
-            pass
+            __proper_key = self._key_normalize(__name)
+        except ValueError:
+            return super().__delattr__(__name)
+        else:
+            del self.dict[__proper_key]
+            return super().__delattr__(__proper_key)
 
     def __setitem__(self, __key, __value) -> None:
-        self.dict[self._key_check(__key)] = __value
-        self.__dict__[self._key_check(__key)] = __value
+        return self.__setattr__(self._key_normalize(__key), __value)
 
     def __getitem__(self, __key):
-        try:
-            return self.dict[self._key_check(__key)]
-        except KeyError:
-            return None
+        return self.__getattribute__(self._key_normalize(__key))
 
     def __delitem__(self, __key):
-        del self.dict[self._key_check(__key)]
-        del self.__dict__[self._key_check(__key)]
+        return self.__delattr__(self._key_normalize(__key))
 
     def __iter__(self):
-        self.i = 0
-        return self
+        return iter(self.dict.values())
 
-    def __next__(self):
-        if self.i < len(self.dict):
-            x = self.dict[list(self.dict.keys())[self.i]]
-            self.i += 1
-            return x
-        else:
-            raise StopIteration
-
-    def _key_check(self, __key) -> str:
+    @staticmethod
+    def _key_normalize(__key) -> str:
         if type(__key) == tuple and len(__key) == 2:
             __key = str(__key[0]) + str(__key[1])
         if type(__key) == str:
-            if bool(re.fullmatch(self._str_pattern, __key.lower())) == True:
-                tmp = re.findall(r"\d+|\w", __key.lower())
-                if tmp[0].isalpha() == True:
-                    return tmp[0] + tmp[1]
-                else:
-                    return tmp[1] + tmp[0]
+            if bool(fullmatch(r"(^\d+\w)|(^\w\d+)", __key.lower())) == True:
+                return "".join(sorted(__key.lower()))
             else:
-                raise ValueError
+                raise ValueError("Имя ячейки составлено неверно")
         else:
-            raise TypeError
-         
+            raise TypeError("Неверные аргументы для записи")
