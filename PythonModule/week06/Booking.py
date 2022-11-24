@@ -21,7 +21,10 @@ class Booking:
 
     @start.setter
     def start(self, __value):
-        self.__start = __value
+        if __value < self.end:
+            self.__start = __value
+        else:
+            raise ValueError("Дата начала позже даты окончания")
 
     @property
     def end(self):
@@ -29,7 +32,10 @@ class Booking:
 
     @end.setter
     def end(self, __value):
-        self.__end = __value
+        if __value > self.start:
+            self.__end = __value
+        else:
+            raise ValueError("Дата начала позже даты окончания")
 
     @property
     def duration(self):

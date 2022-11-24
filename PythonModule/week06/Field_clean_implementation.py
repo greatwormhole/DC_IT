@@ -2,42 +2,38 @@ from re import fullmatch
 
 class Field:
 
-    def __init__(self):
-        self.dict = {}
-
-    def __setattr__(self, __name: str, __value) -> None:
-        if fullmatch(r"\w\d+", __name):
-            return self.__setitem__(__name, __value)
-        return super().__setattr__(__name, __value)
-
-    def __getattribute__(self, __name):
-        if fullmatch(r"\w\d+", __name):
-            return self.__getitem__(__name)
-        return super().__getattribute__(__name)
-
-    def __delattr__(self, __name) -> None:
-        if fullmatch(r"\w\d+", __name):
-            return self.__delitem__(__name)
-        return super().__delattr__(__name)
-
     def __key_normalization(func):
 
         def wrapper(self, __key, *args, **kwargs):
-
-            if type(__key) == tuple and len(__key) == 2:
-                __key = str(__key[0]) + str(__key[1])
-            if type(__key) == str:
-                __key = __key.lower()
-                if fullmatch(r"(^\d+\w)|(^\w\d+)", __key):
-                    __key = "".join(sorted(__key))
+            if type(__key) in (tuple, str):
+                if type(__key) == tuple and len(__key) != 2:
+                    raise ValueError("Invalid tuple key")
+                __new_key = "".join(sorted(str(i).lower() for i in __key))
+                if fullmatch(r"(\d+\w)|(\w\d+)", __new_key):
+                    return func(self, __new_key, *args, **kwargs)
                 else:
-                    raise ValueError("Wrong cell name")
+                    raise ValueError("Invalid string key")
             else:
-                raise TypeError("Wrong type of arguments")
-            
-            return func(self, __key, *args, **kwargs)
-        
+                raise TypeError("Invalid key type")
+
         return wrapper
+
+    def __is_attribute_name(default_func):
+
+        def decorator(func):
+
+            def wrapper(self, __name, *args, **kwargs):
+                if fullmatch(r"\w\d+", __name):
+                    return default_func(self, __name, *args, **kwargs)
+                else:
+                    return func(self, __name, *args, **kwargs)
+
+            return wrapper
+
+        return decorator
+
+    def __init__(self):
+        self.dict = {}
 
     @__key_normalization
     def __setitem__(self, __key, __value) -> None:
@@ -54,6 +50,18 @@ class Field:
     @__key_normalization
     def __contains__(self, __other: object) -> bool:
         return __other in self.dict
+
+    @__is_attribute_name(__setitem__)
+    def __setattr__(self, __name: str, __value) -> None:
+        return super().__setattr__(__name, __value)
+
+    @__is_attribute_name(__getitem__)
+    def __getattribute__(self, __name):
+        return super().__getattribute__(__name)
+
+    @__is_attribute_name(__delitem__)
+    def __delattr__(self, __name) -> None:
+        return super().__delattr__(__name)
 
     def __missing__(self, __key):
         return None

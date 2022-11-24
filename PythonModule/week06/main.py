@@ -112,7 +112,7 @@ def task20() -> None:
     print(json.loads(result))
 
 def main():
-    task_Field_inherintance()
+    task20()
 
 if __name__ == "__main__":
     main()
