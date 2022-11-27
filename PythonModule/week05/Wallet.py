@@ -5,11 +5,11 @@ class BaseWallet:
         self.name = name
         self.amount = amount
 
-    def _copy(self):
-        return BaseWallet(self.name, self.amount)
+    def copy(self):
+        return self.__class__(self.name, self.amount)
 
     def __add__(self, other):
-        tmp = self._copy()
+        tmp = self.copy()
         if issubclass(type(other), BaseWallet) == True:
             tmp.amount += other.to_base() / tmp.exchange_rate
         else:
@@ -27,7 +27,7 @@ class BaseWallet:
         return self
         
     def __sub__(self, other):
-        tmp = self._copy()
+        tmp = self.copy()
         if issubclass(type(other), BaseWallet) == True:
             tmp.amount -= other.to_base() / tmp.exchange_rate
         else:
@@ -35,7 +35,7 @@ class BaseWallet:
         return tmp
 
     def __rsub__(self, other):
-        tmp = self._copy()
+        tmp = self.copy()
         tmp.amount = other - self.amount
         return tmp
 
@@ -47,7 +47,7 @@ class BaseWallet:
         return self
 
     def __mul__(self, other):
-        tmp = self._copy()
+        tmp = self.copy()
         tmp.amount *= float(other)
         return tmp
 
@@ -59,7 +59,7 @@ class BaseWallet:
         return self.__mul__(other)
 
     def __truediv__(self, other):
-        tmp = self._copy()
+        tmp = self.copy()
         tmp.amount /= other
         return tmp
 
@@ -89,9 +89,6 @@ class RubbleWallet(BaseWallet):
     def __init__(self, name: str = "RubbleWallet", amount: int = 0):
         super(RubbleWallet, self).__init__(name, amount)
 
-    def _copy(self):
-        return RubbleWallet(self.name, self.amount)
-
     def __str__(self):
         return f"Rubble Wallet {self.name} {self.amount}"
 
@@ -101,9 +98,6 @@ class DollarWallet(BaseWallet):
     def __init__(self, name: str = "DollarWallet", amount: int = 0):
         super(DollarWallet, self).__init__(name, amount)
 
-    def _copy(self):
-        return DollarWallet(self.name, self.amount)
-
     def __str__(self):
         return f"Dollar Wallet {self.name} {self.amount}"
 
@@ -112,9 +106,6 @@ class EuroWallet(BaseWallet):
 
     def __init__(self, name: str = "EuroWallet", amount: int = 0):
         super(EuroWallet, self).__init__(name, amount)
-
-    def _copy(self):
-        return EuroWallet(self.name, self.amount)
 
     def __str__(self):
         return f"Euro Wallet {self.name} {self.amount}"
