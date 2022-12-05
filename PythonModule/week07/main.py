@@ -22,10 +22,10 @@ def task22():
     print(logger)
 
 def task23():
-    pass
+    request_handler()
 
 def main():
-    task21()
+    task23()
 
 if __name__ == "__main__":
     main()
